@@ -62,7 +62,8 @@ body{font-family:'Montserrat','Segoe UI',Arial,sans-serif;background:radial-grad
 .community-cards{display:flex;justify-content:center;gap:8px;min-height:86px;flex-wrap:wrap}
 
 /* Cards */
-.card{width:58px;height:82px;border-radius:7px;display:flex;flex-direction:column;justify-content:center;align-items:center;font-weight:bold;position:relative;animation:deal-card .35s cubic-bezier(.175,.885,.32,1.275) both;box-shadow:2px 3px 10px rgba(0,0,0,.4),0 0 0 1px rgba(0,0,0,.1)}
+.card{width:58px;height:82px;border-radius:7px;display:flex;flex-direction:column;justify-content:center;align-items:center;font-weight:bold;position:relative;box-shadow:2px 3px 10px rgba(0,0,0,.4),0 0 0 1px rgba(0,0,0,.1)}
+.card.deal-anim{animation:deal-card .35s cubic-bezier(.175,.885,.32,1.275) both}
 .card.face-card{background:linear-gradient(135deg,#fff 0%,#f5f0e8 100%);color:#1a1a1a}
 .card.red{color:#c0392b}
 .card .corner{position:absolute;display:flex;flex-direction:column;align-items:center;line-height:1;font-size:.5rem}
@@ -72,7 +73,8 @@ body{font-family:'Montserrat','Segoe UI',Arial,sans-serif;background:radial-grad
 .card .corner .corner-suit{font-size:.55rem}
 .card .center-suit{font-size:1.8rem;line-height:1;filter:drop-shadow(0 1px 2px rgba(0,0,0,.15))}
 .card .center-rank{font-size:.8rem;font-weight:800;margin-top:-2px}
-.card.hidden-card{background:repeating-linear-gradient(45deg,#1a3a5c,#1a3a5c 4px,#15304d 4px,#15304d 8px);border:2px solid var(--gold);animation:deal-card .35s cubic-bezier(.175,.885,.32,1.275) both,card-shimmer 3s ease-in-out infinite}
+.card.hidden-card{background:repeating-linear-gradient(45deg,#1a3a5c,#1a3a5c 4px,#15304d 4px,#15304d 8px);border:2px solid var(--gold);animation:card-shimmer 3s ease-in-out infinite}
+.card.hidden-card.deal-anim{animation:deal-card .35s cubic-bezier(.175,.885,.32,1.275) both,card-shimmer 3s ease-in-out infinite}
 .card.hidden-card::after{content:'\2666';position:absolute;font-size:1.4rem;color:var(--gold);opacity:.25}
 .card.sm{width:48px;height:68px}
 .card.sm .center-suit{font-size:1.4rem}
@@ -83,7 +85,7 @@ body{font-family:'Montserrat','Segoe UI',Arial,sans-serif;background:radial-grad
 .card.sm .corner .corner-suit{font-size:.45rem}
 @keyframes deal-card{0%{opacity:0;transform:translateY(-60px) rotateY(90deg) scale(.5)}100%{opacity:1;transform:translateY(0) rotateY(0) scale(1)}}
 @keyframes card-shimmer{0%,100%{box-shadow:2px 3px 10px rgba(0,0,0,.4),0 0 12px rgba(212,168,67,.1)}50%{box-shadow:2px 3px 10px rgba(0,0,0,.4),0 0 22px rgba(212,168,67,.3)}}
-.card:nth-child(1){animation-delay:0s}.card:nth-child(2){animation-delay:.08s}.card:nth-child(3){animation-delay:.16s}.card:nth-child(4){animation-delay:.24s}.card:nth-child(5){animation-delay:.32s}
+.card.deal-anim:nth-child(1){animation-delay:0s}.card.deal-anim:nth-child(2){animation-delay:.08s}.card.deal-anim:nth-child(3){animation-delay:.16s}.card.deal-anim:nth-child(4){animation-delay:.24s}.card.deal-anim:nth-child(5){animation-delay:.32s}
 
 /* Divider */
 .table-divider{display:flex;align-items:center;gap:12px;margin:10px 0}
@@ -220,8 +222,9 @@ function createDeck(){var d=[];for(var s=0;s<SUITS.length;s++)for(var r=0;r<RANK
 function shuffle(d){for(var i=d.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=d[i];d[i]=d[j];d[j]=t}return d}
 
 // ── Card HTML ──
-function cardHTML(card,hidden,sm){
-  var cls = sm ? 'card sm' : 'card';
+function cardHTML(card,hidden,sm){return cardHTMLWithAnim(card,hidden,sm,'')}
+function cardHTMLWithAnim(card,hidden,sm,animCls){
+  var cls = (sm ? 'card sm' : 'card')+animCls;
   if(hidden) return '<div class="'+cls+' hidden-card"></div>';
   var isRed = card.suit==='hearts'||card.suit==='diamonds';
   var sym = SUIT_SYM[card.suit];
@@ -316,6 +319,8 @@ var players = [];
 var deck = [];
 var community = [];
 var pot = 0;
+var prevCommunityCount = 0;
+var prevPlayerCardCount = [];
 var currentBet = 0;
 var dealerIdx = 0;
 var currentPlayerIdx = 0;
@@ -357,6 +362,9 @@ function startHand(){
     players[i].allIn=false;players[i].lastAction='';
   }
   community=[];pot=0;currentBet=0;minRaise=BIG_BLIND;
+  prevCommunityCount=0;
+  prevPlayerCardCount=[];
+  for(var i=0;i<players.length;i++) prevPlayerCardCount[i]=0;
   deck=shuffle(createDeck());
   handInProgress=true;
 
@@ -791,8 +799,10 @@ function renderPlayers(){
     html+='<div class="player-cards">';
     if(p.hand.length>0){
       var showCards = p.isHuman || phase==='showdown' && !p.folded;
-      html+=cardHTML(p.hand[0],!showCards,true);
-      html+=cardHTML(p.hand[1],!showCards,true);
+      var anim=(prevPlayerCardCount[i]||0)===0?' deal-anim':'';
+      html+=cardHTMLWithAnim(p.hand[0],!showCards,true,anim);
+      html+=cardHTMLWithAnim(p.hand[1],!showCards,true,anim);
+      prevPlayerCardCount[i]=p.hand.length;
     }
     html+='</div>';
     var actionCls='player-action';
@@ -810,10 +820,13 @@ function renderPlayers(){
 function renderCommunity(){
   var el=document.getElementById('community-cards');
   var html='';
-  for(var i=0;i<community.length;i++) html+=cardHTML(community[i],false,false);
-  // Placeholder slots
+  for(var i=0;i<community.length;i++){
+    var anim=i>=prevCommunityCount?' deal-anim':'';
+    html+=cardHTMLWithAnim(community[i],false,false,anim);
+  }
   for(var i=community.length;i<5;i++) html+='<div class="card" style="background:rgba(0,0,0,.2);border:2px dashed rgba(255,255,255,.1);box-shadow:none;animation:none"></div>';
   el.innerHTML=html;
+  prevCommunityCount=community.length;
 }
 
 function renderYourHand(){
@@ -821,7 +834,8 @@ function renderYourHand(){
   var rankEl=document.getElementById('hand-rank');
   var p=players[0];
   if(p.hand.length===0||p.eliminated){el.innerHTML='';rankEl.textContent='';return}
-  el.innerHTML=cardHTML(p.hand[0],false,false)+cardHTML(p.hand[1],false,false);
+  var anim=(prevPlayerCardCount[0]||0)===0?' deal-anim':'';
+  el.innerHTML=cardHTMLWithAnim(p.hand[0],false,false,anim)+cardHTMLWithAnim(p.hand[1],false,false,anim);
   if(community.length>0 && !p.folded){
     var all=p.hand.concat(community);
     var ev=evaluateHand(all);
