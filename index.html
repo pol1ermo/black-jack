@@ -6,6 +6,7 @@
 <title>Texas Hold'em - Casino Royale</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--felt:#0d5e2f;--felt-light:#11753b;--felt-dark:#094a24;--gold:#d4a843;--gold-bright:#f0c850;--neon-red:#ff2d55;--neon-blue:#00d4ff;--wood:#3e2415;--wood-light:#5a3520}
@@ -26,6 +27,22 @@ body{font-family:'Montserrat','Segoe UI',Arial,sans-serif;background:radial-grad
 .table-edge.bottom{border-radius:0 0 24px 24px}
 .table-felt{background:radial-gradient(ellipse at 50% 40%,var(--felt-light) 0%,var(--felt) 50%,var(--felt-dark) 100%);padding:18px 16px;position:relative;min-height:420px}
 .table-felt::before{content:'';position:absolute;inset:0;background-image:linear-gradient(45deg,rgba(255,255,255,.02) 25%,transparent 25%),linear-gradient(-45deg,rgba(255,255,255,.02) 25%,transparent 25%),linear-gradient(45deg,transparent 75%,rgba(255,255,255,.02) 75%),linear-gradient(-45deg,transparent 75%,rgba(255,255,255,.02) 75%);background-size:30px 30px;pointer-events:none}
+
+/* Menu */
+.menu-screen{text-align:center;padding:40px 20px}
+.menu-title{font-size:1.2rem;font-weight:700;color:var(--gold-bright);margin-bottom:24px;letter-spacing:3px}
+.menu-btns{display:flex;flex-direction:column;gap:12px;align-items:center}
+.menu-btns .btn{width:260px}
+.menu-input{width:260px;padding:12px;border:2px solid var(--gold);border-radius:10px;background:rgba(0,0,0,.4);color:#fff;font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:600;text-align:center;letter-spacing:2px}
+.menu-input:focus{outline:none;border-color:var(--gold-bright);box-shadow:0 0 12px rgba(212,168,67,.3)}
+.menu-input::placeholder{color:rgba(255,255,255,.3)}
+.room-code-display{font-size:2rem;font-weight:900;color:var(--gold-bright);letter-spacing:8px;text-shadow:0 0 15px rgba(212,168,67,.5);margin:16px 0;user-select:all;cursor:pointer}
+.lobby-players{margin:16px 0;text-align:center}
+.lobby-player{display:inline-block;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.15);border-radius:8px;padding:6px 14px;margin:4px;font-size:.8rem;font-weight:600;letter-spacing:1px}
+.lobby-player.host{border-color:var(--gold);color:var(--gold-bright)}
+.lobby-status{font-size:.8rem;color:rgba(255,255,255,.5);margin-top:8px;letter-spacing:1px}
+.menu-or{color:rgba(255,255,255,.3);font-size:.8rem;letter-spacing:3px;margin:4px 0}
+.copy-hint{font-size:.7rem;color:rgba(255,255,255,.4);margin-top:4px}
 
 /* Top bar */
 .top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
@@ -104,7 +121,7 @@ body{font-family:'Montserrat','Segoe UI',Arial,sans-serif;background:radial-grad
 .hand-rank{font-size:.85rem;font-weight:700;color:var(--gold-bright);min-height:20px;margin-bottom:4px}
 
 /* Controls */
-.controls{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:12px}
+.controls{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
 .btn{padding:12px 22px;font-family:'Montserrat',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:2px;border:none;border-radius:10px;cursor:pointer;transition:all .2s;text-transform:uppercase;position:relative;overflow:hidden}
 .btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.15) 0%,transparent 50%);pointer-events:none}
 .btn-fold{background:linear-gradient(135deg,#7f8c8d,#5a6268);color:#fff;box-shadow:0 4px 12px rgba(127,140,141,.3)}
@@ -119,6 +136,10 @@ body{font-family:'Montserrat','Segoe UI',Arial,sans-serif;background:radial-grad
 .btn-allin:hover:not(:disabled){background:linear-gradient(135deg,#e74c3c,#c0392b);transform:translateY(-2px)}
 .btn-deal{background:linear-gradient(135deg,#27ae60,#1e8449);color:#fff;box-shadow:0 4px 12px rgba(39,174,96,.4);padding:14px 36px;font-size:1rem}
 .btn-deal:hover:not(:disabled){background:linear-gradient(135deg,#2ecc71,#27ae60);transform:translateY(-2px)}
+.btn-online{background:linear-gradient(135deg,#8e44ad,#6c3483);color:#fff;box-shadow:0 4px 12px rgba(142,68,173,.4)}
+.btn-online:hover:not(:disabled){background:linear-gradient(135deg,#9b59b6,#8e44ad);transform:translateY(-2px)}
+.btn-back{background:linear-gradient(135deg,#555,#333);color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.3);padding:10px 20px;font-size:.8rem}
+.btn-back:hover:not(:disabled){background:linear-gradient(135deg,#666,#444);transform:translateY(-2px)}
 .btn:disabled{opacity:.3;cursor:default;transform:none!important}
 .btn:active:not(:disabled){transform:translateY(1px)}
 .raise-input{width:80px;padding:8px;border:2px solid var(--gold);border-radius:8px;background:rgba(0,0,0,.4);color:#fff;font-family:'Montserrat',sans-serif;font-size:.9rem;font-weight:700;text-align:center}
@@ -149,754 +170,575 @@ body{font-family:'Montserrat','Segoe UI',Arial,sans-serif;background:radial-grad
   </div>
   <div class="table">
     <div class="table-edge top"></div>
-    <div class="table-felt">
-      <div class="top-bar">
-        <div class="pot-display">Pot: $<span id="pot" class="pot-amount">0</span></div>
-        <div class="round-info" id="round-info">Press Deal to Start</div>
-      </div>
-      <div class="players-row" id="players-row"></div>
-      <div class="community-area">
-        <div class="community-label">Community Cards</div>
-        <div class="community-cards" id="community-cards"></div>
-      </div>
-      <div class="table-divider"><div class="divider-line"></div><div id="message" class="message"></div><div class="divider-line"></div></div>
-      <div class="your-hand-area">
-        <div class="your-hand-label">Your Hand</div>
-        <div class="your-cards" id="your-cards"></div>
-        <div class="hand-rank" id="hand-rank"></div>
-      </div>
+    <div class="table-felt" id="game-area">
+      <!-- Dynamic content rendered by JS -->
     </div>
     <div class="table-edge bottom"></div>
   </div>
-  <div class="controls" id="controls">
-    <button class="btn btn-deal" id="btn-deal" onclick="startHand()">&#127183; DEAL</button>
-  </div>
+  <div class="controls" id="controls"></div>
 </div>
 <script>
 // ═══════════════════════════════════════
-// TEXAS HOLD'EM POKER
+// TEXAS HOLD'EM POKER - MULTIPLAYER
 // ═══════════════════════════════════════
 
-var SUITS = ['hearts','diamonds','clubs','spades'];
-var RANKS = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
-var RANK_VALUES = {'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'10':10,'J':11,'Q':12,'K':13,'A':14};
-var SUIT_SYM = {hearts:'\u2665',diamonds:'\u2666',clubs:'\u2663',spades:'\u2660'};
-var HAND_NAMES = ['High Card','One Pair','Two Pair','Three of a Kind','Straight','Flush','Full House','Four of a Kind','Straight Flush','Royal Flush'];
+var SUITS=['hearts','diamonds','clubs','spades'];
+var RANKS=['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+var RANK_VALUES={'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'10':10,'J':11,'Q':12,'K':13,'A':14};
+var SUIT_SYM={hearts:'\u2665',diamonds:'\u2666',clubs:'\u2663',spades:'\u2660'};
+var HAND_NAMES=['High Card','One Pair','Two Pair','Three of a Kind','Straight','Flush','Full House','Four of a Kind','Straight Flush','Royal Flush'];
+var SMALL_BLIND=5,BIG_BLIND=10,STARTING_CHIPS=1000;
 
 // ── Audio ──
-var audioCtx = null;
-try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
-function playSound(type) {
-  if (!audioCtx) return;
-  try {
-    var now = audioCtx.currentTime;
-    var gain = audioCtx.createGain();
-    gain.connect(audioCtx.destination);
-    if (type === 'card') {
-      var osc = audioCtx.createOscillator(); osc.type = 'square';
-      osc.frequency.setValueAtTime(800,now); osc.frequency.exponentialRampToValueAtTime(200,now+.05);
-      gain.gain.setValueAtTime(.12,now); gain.gain.exponentialRampToValueAtTime(.001,now+.08);
-      osc.connect(gain); osc.start(now); osc.stop(now+.08);
-    } else if (type === 'chip') {
-      var o2 = audioCtx.createOscillator(); o2.type = 'sine';
-      o2.frequency.setValueAtTime(2000,now); o2.frequency.exponentialRampToValueAtTime(800,now+.06);
-      gain.gain.setValueAtTime(.08,now); gain.gain.exponentialRampToValueAtTime(.001,now+.1);
-      o2.connect(gain); o2.start(now); o2.stop(now+.1);
-    } else if (type === 'win') {
-      [523,659,784].forEach(function(f,i){
-        var o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=f;
-        g.gain.setValueAtTime(0,now+i*.12);g.gain.linearRampToValueAtTime(.12,now+i*.12+.02);
-        g.gain.exponentialRampToValueAtTime(.001,now+i*.12+.3);o.connect(g);g.connect(audioCtx.destination);
-        o.start(now+i*.12);o.stop(now+i*.12+.3);
-      });
-    }
-  } catch(e){}
-}
+var audioCtx=null;
+try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}
+function playSound(t){if(!audioCtx)return;try{var n=audioCtx.currentTime,g=audioCtx.createGain();g.connect(audioCtx.destination);if(t==='card'){var o=audioCtx.createOscillator();o.type='square';o.frequency.setValueAtTime(800,n);o.frequency.exponentialRampToValueAtTime(200,n+.05);g.gain.setValueAtTime(.12,n);g.gain.exponentialRampToValueAtTime(.001,n+.08);o.connect(g);o.start(n);o.stop(n+.08)}else if(t==='chip'){var o2=audioCtx.createOscillator();o2.type='sine';o2.frequency.setValueAtTime(2000,n);o2.frequency.exponentialRampToValueAtTime(800,n+.06);g.gain.setValueAtTime(.08,n);g.gain.exponentialRampToValueAtTime(.001,n+.1);o2.connect(g);o2.start(n);o2.stop(n+.1)}else if(t==='win'){[523,659,784].forEach(function(f,i){var o=audioCtx.createOscillator(),gg=audioCtx.createGain();o.type='sine';o.frequency.value=f;gg.gain.setValueAtTime(0,n+i*.12);gg.gain.linearRampToValueAtTime(.12,n+i*.12+.02);gg.gain.exponentialRampToValueAtTime(.001,n+i*.12+.3);o.connect(gg);gg.connect(audioCtx.destination);o.start(n+i*.12);o.stop(n+i*.12+.3)})}}catch(e){}}
 
-// ── Particles ──
+// ── Particles & Confetti ──
 function initParticles(){var c=document.getElementById('particles');for(var i=0;i<25;i++){var p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';p.style.animationDuration=(6+Math.random()*10)+'s';p.style.animationDelay=(Math.random()*10)+'s';var s=(2+Math.random()*3)+'px';p.style.width=s;p.style.height=s;c.appendChild(p)}}
 function spawnConfetti(){var cols=['#f0c850','#e74c3c','#2ecc71','#3498db','#fff','#ff2d55'];for(var i=0;i<40;i++){var e=document.createElement('div');e.className='confetti';e.style.left=Math.random()*100+'vw';e.style.top='-10px';e.style.background=cols[Math.floor(Math.random()*cols.length)];e.style.animationDuration=(1.5+Math.random()*2)+'s';e.style.animationDelay=(Math.random()*.5)+'s';var w=(5+Math.random()*8)+'px';e.style.width=w;e.style.height=w;e.style.borderRadius=Math.random()>.5?'50%':'2px';document.body.appendChild(e);e.addEventListener('animationend',function(){this.remove()})}}
 
 // ── Deck ──
-function createDeck(){var d=[];for(var s=0;s<SUITS.length;s++)for(var r=0;r<RANKS.length;r++)d.push({rank:RANKS[r],suit:SUITS[s]});return d}
+function createDeck(){var d=[];for(var s=0;s<4;s++)for(var r=0;r<13;r++)d.push({rank:RANKS[r],suit:SUITS[s]});return d}
 function shuffle(d){for(var i=d.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=d[i];d[i]=d[j];d[j]=t}return d}
 
 // ── Card HTML ──
-function cardHTML(card,hidden,sm){return cardHTMLWithAnim(card,hidden,sm,'')}
-function cardHTMLWithAnim(card,hidden,sm,animCls){
-  var cls = (sm ? 'card sm' : 'card')+animCls;
-  if(hidden) return '<div class="'+cls+' hidden-card"></div>';
-  var isRed = card.suit==='hearts'||card.suit==='diamonds';
-  var sym = SUIT_SYM[card.suit];
-  return '<div class="'+cls+' face-card'+(isRed?' red':'')+'">' +
-    '<div class="corner corner-top"><span class="corner-rank">'+card.rank+'</span><span class="corner-suit">'+sym+'</span></div>' +
-    '<span class="center-suit">'+sym+'</span>' +
-    '<span class="center-rank">'+card.rank+'</span>' +
-    '<div class="corner corner-bottom"><span class="corner-rank">'+card.rank+'</span><span class="corner-suit">'+sym+'</span></div>' +
-  '</div>';
+function cardHTML(c,hidden,sm){return cardHTMLAnim(c,hidden,sm,'')}
+function cardHTMLAnim(c,hidden,sm,anim){
+  var cls=(sm?'card sm':'card')+anim;
+  if(hidden)return'<div class="'+cls+' hidden-card"></div>';
+  var red=c.suit==='hearts'||c.suit==='diamonds',sym=SUIT_SYM[c.suit];
+  return'<div class="'+cls+' face-card'+(red?' red':'')+'"><div class="corner corner-top"><span class="corner-rank">'+c.rank+'</span><span class="corner-suit">'+sym+'</span></div><span class="center-suit">'+sym+'</span><span class="center-rank">'+c.rank+'</span><div class="corner corner-bottom"><span class="corner-rank">'+c.rank+'</span><span class="corner-suit">'+sym+'</span></div></div>';
 }
 
 // ═══════════════════════════════════════
 // HAND EVALUATION
 // ═══════════════════════════════════════
-
-function evaluateHand(cards) {
-  // Find best 5-card hand from 7 cards
-  var best = null;
-  var combos = getCombinations(cards, 5);
-  for (var i = 0; i < combos.length; i++) {
-    var score = scoreHand(combos[i]);
-    if (!best || compareScores(score, best) > 0) best = score;
-  }
+function evaluateHand(cards){
+  var best=null,combos=getCombinations(cards,5);
+  for(var i=0;i<combos.length;i++){var s=scoreHand(combos[i]);if(!best||compareScores(s,best)>0)best=s}
   return best;
 }
-
-function getCombinations(arr, k) {
-  var results = [];
-  function combine(start, combo) {
-    if (combo.length === k) { results.push(combo.slice()); return; }
-    for (var i = start; i < arr.length; i++) { combo.push(arr[i]); combine(i+1, combo); combo.pop(); }
-  }
-  combine(0, []);
-  return results;
+function getCombinations(a,k){var r=[];function c(s,combo){if(combo.length===k){r.push(combo.slice());return}for(var i=s;i<a.length;i++){combo.push(a[i]);c(i+1,combo);combo.pop()}}c(0,[]);return r}
+function scoreHand(five){
+  var ranks=five.map(function(c){return RANK_VALUES[c.rank]}).sort(function(a,b){return b-a});
+  var suits=five.map(function(c){return c.suit});
+  var isFlush=suits.every(function(s){return s===suits[0]});
+  var isStraight=false,straightHigh=0;
+  if(ranks[0]-ranks[4]===4&&new Set(ranks).size===5){isStraight=true;straightHigh=ranks[0]}
+  if(!isStraight&&ranks[0]===14&&ranks[1]===5&&ranks[2]===4&&ranks[3]===3&&ranks[4]===2){isStraight=true;straightHigh=5}
+  var counts={};for(var i=0;i<5;i++)counts[ranks[i]]=(counts[ranks[i]]||0)+1;
+  var groups=[];for(var r in counts)groups.push({rank:parseInt(r),count:counts[r]});
+  groups.sort(function(a,b){return b.count-a.count||b.rank-a.rank});
+  var hr=0,k=ranks.slice();
+  if(isFlush&&isStraight&&straightHigh===14){hr=9;k=[14]}
+  else if(isFlush&&isStraight){hr=8;k=[straightHigh]}
+  else if(groups[0].count===4){hr=7;k=[groups[0].rank,groups[1].rank]}
+  else if(groups[0].count===3&&groups[1].count===2){hr=6;k=[groups[0].rank,groups[1].rank]}
+  else if(isFlush){hr=5}
+  else if(isStraight){hr=4;k=[straightHigh]}
+  else if(groups[0].count===3){hr=3;k=[groups[0].rank,groups[1].rank,groups[2].rank]}
+  else if(groups[0].count===2&&groups[1].count===2){hr=2;k=[Math.max(groups[0].rank,groups[1].rank),Math.min(groups[0].rank,groups[1].rank),groups[2].rank]}
+  else if(groups[0].count===2){hr=1;k=[groups[0].rank];for(var j=0;j<groups.length;j++)if(groups[j].count===1)k.push(groups[j].rank)}
+  return{handRank:hr,kickers:k,name:HAND_NAMES[hr]};
 }
+function compareScores(a,b){if(a.handRank!==b.handRank)return a.handRank-b.handRank;for(var i=0;i<Math.min(a.kickers.length,b.kickers.length);i++)if(a.kickers[i]!==b.kickers[i])return a.kickers[i]-b.kickers[i];return 0}
 
-function scoreHand(five) {
-  var ranks = five.map(function(c){return RANK_VALUES[c.rank]}).sort(function(a,b){return b-a});
-  var suits = five.map(function(c){return c.suit});
-  var isFlush = suits.every(function(s){return s===suits[0]});
-  var isStraight = false;
-  var straightHigh = 0;
+// ═══════════════════════════════════════
+// GAME MODE MANAGEMENT
+// ═══════════════════════════════════════
+var gameMode='menu'; // menu, solo, lobby, online
+var myName='';
+var myPlayerIdx=-1;
 
-  // Check straight
-  var unique = ranks.slice();
-  if(unique[0]-unique[4]===4 && new Set(unique).size===5){isStraight=true;straightHigh=unique[0]}
-  // Ace-low straight (A-2-3-4-5)
-  if(!isStraight && unique[0]===14 && unique[1]===5 && unique[2]===4 && unique[3]===3 && unique[4]===2){isStraight=true;straightHigh=5}
+// ── Solo mode state ──
+var players=[],deck=[],community=[],pot=0,currentBet=0,dealerIdx=0,currentPlayerIdx=0;
+var phase='idle',handInProgress=false,playerActed=[],lastRaiseIdx=-1,minRaise=BIG_BLIND;
+var prevCommunityCount=0,prevPlayerCardCount=[];
+var AI_NAMES=['Ace','Maverick','Viper','Duchess'];
 
-  // Count ranks
-  var counts = {};
-  for(var i=0;i<ranks.length;i++){counts[ranks[i]]=(counts[ranks[i]]||0)+1}
-  var groups = [];
-  for(var r in counts) groups.push({rank:parseInt(r),count:counts[r]});
-  groups.sort(function(a,b){return b.count-a.count || b.rank-a.rank});
+// ── Online mode state ──
+var peer=null,conns=[],isHost=false,roomCode='';
+var lobbyPlayers=[]; // {name,peerId,conn}
+var onlineState=null; // game state received from host
 
-  var handRank = 0;
-  var kickers = ranks.slice();
-
-  if(isFlush && isStraight && straightHigh===14){handRank=9; kickers=[14]} // Royal flush
-  else if(isFlush && isStraight){handRank=8; kickers=[straightHigh]} // Straight flush
-  else if(groups[0].count===4){handRank=7; kickers=[groups[0].rank,groups[1].rank]} // Four of a kind
-  else if(groups[0].count===3 && groups[1].count===2){handRank=6; kickers=[groups[0].rank,groups[1].rank]} // Full house
-  else if(isFlush){handRank=5} // Flush
-  else if(isStraight){handRank=4; kickers=[straightHigh]} // Straight
-  else if(groups[0].count===3){handRank=3; kickers=[groups[0].rank,groups[1].rank,groups[2].rank]} // Three of a kind
-  else if(groups[0].count===2 && groups[1].count===2){handRank=2; kickers=[Math.max(groups[0].rank,groups[1].rank),Math.min(groups[0].rank,groups[1].rank),groups[2].rank]} // Two pair
-  else if(groups[0].count===2){handRank=1; kickers=[groups[0].rank]; for(var j=0;j<groups.length;j++) if(groups[j].count===1) kickers.push(groups[j].rank)} // One pair
-
-  return {handRank:handRank, kickers:kickers, name:HAND_NAMES[handRank]};
-}
-
-function compareScores(a,b){
-  if(a.handRank!==b.handRank) return a.handRank-b.handRank;
-  for(var i=0;i<Math.min(a.kickers.length,b.kickers.length);i++){
-    if(a.kickers[i]!==b.kickers[i]) return a.kickers[i]-b.kickers[i];
-  }
-  return 0;
+function showMenu(){
+  gameMode='menu';
+  if(peer){peer.destroy();peer=null}
+  conns=[];lobbyPlayers=[];onlineState=null;
+  var ga=document.getElementById('game-area');
+  ga.innerHTML='<div class="menu-screen">'+
+    '<div class="menu-title">Choose Game Mode</div>'+
+    '<div class="menu-btns">'+
+      '<input class="menu-input" id="name-input" placeholder="Your Name" maxlength="12" value="'+(myName||'')+'">'+
+      '<button class="btn btn-deal" onclick="startSoloMode()">&#127183; SOLO vs AI</button>'+
+      '<div class="menu-or">- OR -</div>'+
+      '<button class="btn btn-online" onclick="showCreateRoom()">&#9733; CREATE ROOM</button>'+
+      '<button class="btn btn-online" onclick="showJoinRoom()">&#9654; JOIN ROOM</button>'+
+    '</div></div>';
+  document.getElementById('controls').innerHTML='';
 }
 
 // ═══════════════════════════════════════
-// GAME STATE
+// SOLO MODE (vs AI) - same as before
 // ═══════════════════════════════════════
-
-var AI_NAMES = ['Ace','Maverick','Viper','Duchess'];
-var PLAYER_COUNT = 5; // you + 4 AI
-var SMALL_BLIND = 5;
-var BIG_BLIND = 10;
-var STARTING_CHIPS = 1000;
-
-var players = [];
-var deck = [];
-var community = [];
-var pot = 0;
-var prevCommunityCount = 0;
-var prevPlayerCardCount = [];
-var currentBet = 0;
-var dealerIdx = 0;
-var currentPlayerIdx = 0;
-var phase = 'idle'; // idle, preflop, flop, turn, river, showdown
-var handInProgress = false;
-var playerActed = []; // track who acted this round
-var lastRaiseIdx = -1;
-var minRaise = BIG_BLIND;
-
-function initPlayers() {
-  players = [];
-  players.push({name:'You',chips:STARTING_CHIPS,hand:[],bet:0,folded:false,allIn:false,isHuman:true,lastAction:''});
-  for(var i=0;i<AI_NAMES.length;i++){
-    players.push({name:AI_NAMES[i],chips:STARTING_CHIPS,hand:[],bet:0,folded:false,allIn:false,isHuman:false,lastAction:''});
-  }
+function startSoloMode(){
+  myName=document.getElementById('name-input').value.trim()||'You';
+  gameMode='solo';
+  players=[];
+  players.push({name:myName,chips:STARTING_CHIPS,hand:[],bet:0,folded:false,allIn:false,isHuman:true,lastAction:''});
+  for(var i=0;i<AI_NAMES.length;i++)players.push({name:AI_NAMES[i],chips:STARTING_CHIPS,hand:[],bet:0,folded:false,allIn:false,isHuman:false,lastAction:''});
+  phase='idle';dealerIdx=0;handInProgress=false;
+  renderGameArea();renderSoloAll();
+}
+function renderGameArea(){
+  document.getElementById('game-area').innerHTML=
+    '<div class="top-bar"><div class="pot-display">Pot: $<span id="pot" class="pot-amount">0</span></div><div class="round-info" id="round-info"></div></div>'+
+    '<div class="players-row" id="players-row"></div>'+
+    '<div class="community-area"><div class="community-label">Community Cards</div><div class="community-cards" id="community-cards"></div></div>'+
+    '<div class="table-divider"><div class="divider-line"></div><div id="message" class="message"></div><div class="divider-line"></div></div>'+
+    '<div class="your-hand-area"><div class="your-hand-label">Your Hand</div><div class="your-cards" id="your-cards"></div><div class="hand-rank" id="hand-rank"></div></div>';
 }
 
-function activePlayers(){return players.filter(function(p){return !p.folded && p.chips>=0 && !p.eliminated})}
-function playersInHand(){return players.filter(function(p){return !p.folded && !p.eliminated})}
-function playersStillBetting(){return players.filter(function(p){return !p.folded && !p.eliminated && !p.allIn})}
-
-// ═══════════════════════════════════════
-// GAME FLOW
-// ═══════════════════════════════════════
+function playersInHand(){return players.filter(function(p){return!p.folded&&!p.eliminated})}
+function playersStillBetting(){return players.filter(function(p){return!p.folded&&!p.eliminated&&!p.allIn})}
+function nextActiveIdx(from){var idx=(from+1)%players.length,s=0;while((players[idx].folded||players[idx].eliminated||players[idx].allIn)&&s<players.length){idx=(idx+1)%players.length;s++}return idx}
+function resetActed(){playerActed=[];for(var i=0;i<players.length;i++)playerActed[i]=false}
+function allActedAndEven(){for(var i=0;i<players.length;i++){if(players[i].folded||players[i].eliminated||players[i].allIn)continue;if(!playerActed[i])return false;if(players[i].bet!==currentBet)return false}return true}
 
 function startHand(){
-  // Clean up eliminated players
-  for(var i=0;i<players.length;i++){
-    if(players[i].chips<=0) players[i].eliminated=true;
-  }
-
-  var alive = players.filter(function(p){return !p.eliminated});
+  for(var i=0;i<players.length;i++)if(players[i].chips<=0)players[i].eliminated=true;
+  var alive=players.filter(function(p){return!p.eliminated});
   if(alive.length<2){showMsg('Game Over!','win');return}
   if(players[0].eliminated){showMsg('You\'re out! Refresh to play again.','lose');return}
-
-  // Reset for new hand
-  for(var i=0;i<players.length;i++){
-    players[i].hand=[];players[i].bet=0;players[i].folded=players[i].eliminated||false;
-    players[i].allIn=false;players[i].lastAction='';
-  }
-  community=[];pot=0;currentBet=0;minRaise=BIG_BLIND;
-  prevCommunityCount=0;
-  prevPlayerCardCount=[];
-  for(var i=0;i<players.length;i++) prevPlayerCardCount[i]=0;
-  deck=shuffle(createDeck());
-  handInProgress=true;
-
-  // Move dealer
+  for(var i=0;i<players.length;i++){players[i].hand=[];players[i].bet=0;players[i].folded=players[i].eliminated||false;players[i].allIn=false;players[i].lastAction=''}
+  community=[];pot=0;currentBet=0;minRaise=BIG_BLIND;prevCommunityCount=0;prevPlayerCardCount=[];
+  for(var i=0;i<players.length;i++)prevPlayerCardCount[i]=0;
+  deck=shuffle(createDeck());handInProgress=true;
   do{dealerIdx=(dealerIdx+1)%players.length}while(players[dealerIdx].eliminated);
-
-  // Post blinds
-  var sbIdx=nextActiveIdx(dealerIdx);
-  var bbIdx=nextActiveIdx(sbIdx);
-  postBlind(sbIdx,SMALL_BLIND);
-  postBlind(bbIdx,BIG_BLIND);
-  currentBet=BIG_BLIND;
-
-  // Deal hole cards
-  for(var i=0;i<players.length;i++){
-    if(!players[i].eliminated){
-      players[i].hand=[deck.pop(),deck.pop()];
-    }
-  }
-
-  phase='preflop';
-  currentPlayerIdx=nextActiveIdx(bbIdx);
-  lastRaiseIdx=bbIdx;
-  resetActed();
-  playerActed[sbIdx]=true;
-  playerActed[bbIdx]=true;
-
-  playSound('card');
-  renderAll();
-
-  if(!players[currentPlayerIdx].isHuman) runAILoop();
+  var sbIdx=nextActiveIdx(dealerIdx),bbIdx=nextActiveIdx(sbIdx);
+  postBlind(sbIdx,SMALL_BLIND);postBlind(bbIdx,BIG_BLIND);currentBet=BIG_BLIND;
+  for(var i=0;i<players.length;i++)if(!players[i].eliminated)players[i].hand=[deck.pop(),deck.pop()];
+  phase='preflop';currentPlayerIdx=nextActiveIdx(bbIdx);lastRaiseIdx=bbIdx;
+  resetActed();playerActed[sbIdx]=true;playerActed[bbIdx]=true;
+  playSound('card');renderSoloAll();
+  if(gameMode==='solo'&&!players[currentPlayerIdx].isHuman)runAILoop();
+  if(gameMode==='online'&&isHost)broadcastState();
 }
-
-function postBlind(idx,amount){
-  var a=Math.min(amount,players[idx].chips);
-  players[idx].chips-=a;
-  players[idx].bet=a;
-  pot+=a;
-  if(players[idx].chips===0) players[idx].allIn=true;
-  players[idx].lastAction=amount===SMALL_BLIND?'SB':'BB';
-}
-
-function nextActiveIdx(from){
-  var idx=(from+1)%players.length;
-  var safety=0;
-  while((players[idx].folded||players[idx].eliminated||players[idx].allIn)&&safety<players.length){
-    idx=(idx+1)%players.length;safety++;
-  }
-  return idx;
-}
-
-function resetActed(){
-  playerActed=[];
-  for(var i=0;i<players.length;i++) playerActed[i]=false;
-}
+function postBlind(idx,amt){var a=Math.min(amt,players[idx].chips);players[idx].chips-=a;players[idx].bet=a;pot+=a;if(players[idx].chips===0)players[idx].allIn=true;players[idx].lastAction=amt===SMALL_BLIND?'SB':'BB'}
 
 function advancePlayer(){
-  // Check if betting round is over
-  var stillBetting = playersStillBetting();
-  if(stillBetting.length===0 || allActedAndEven()){
-    advancePhase();
-    return;
-  }
-  // Also if only one non-folded player
-  if(playersInHand().length<=1){
-    resolveHand();
-    return;
-  }
-
-  var next = (currentPlayerIdx+1)%players.length;
-  var safety=0;
-  while(safety<players.length){
-    if(!players[next].folded && !players[next].eliminated && !players[next].allIn){
-      break;
-    }
-    next=(next+1)%players.length;
-    safety++;
-  }
-  if(safety>=players.length){advancePhase();return}
-  currentPlayerIdx=next;
-  renderAll();
-  if(!players[currentPlayerIdx].isHuman) runAILoop();
-}
-
-function allActedAndEven(){
-  for(var i=0;i<players.length;i++){
-    if(players[i].folded||players[i].eliminated||players[i].allIn) continue;
-    if(!playerActed[i]) return false;
-    if(players[i].bet!==currentBet) return false;
-  }
-  return true;
-}
-
-function advancePhase(){
-  // Reset bets for new round
-  for(var i=0;i<players.length;i++) players[i].bet=0;
-  currentBet=0;minRaise=BIG_BLIND;
-  resetActed();
-
-  if(phase==='preflop'){
-    phase='flop';
-    deck.pop(); // burn
-    community.push(deck.pop(),deck.pop(),deck.pop());
-  } else if(phase==='flop'){
-    phase='turn';
-    deck.pop();
-    community.push(deck.pop());
-  } else if(phase==='turn'){
-    phase='river';
-    deck.pop();
-    community.push(deck.pop());
-  } else if(phase==='river'){
-    phase='showdown';
-    resolveHand();
-    return;
-  }
-
-  playSound('card');
-
-  // Check if no players left who can bet (all folded or all-in)
-  if(playersStillBetting().length===0){
-    renderAll();
-    setTimeout(function(){advancePhase()},800);
-    return;
-  }
-
-  // First to act post-flop: first active player after dealer
-  currentPlayerIdx=nextActiveIdx(dealerIdx);
-  lastRaiseIdx=-1;
-  renderAll();
-
-  if(!players[currentPlayerIdx].isHuman) runAILoop();
-}
-
-// ── Player Actions ──
-
-function playerFold(){
-  if(!handInProgress||phase==='idle'||phase==='showdown') return;
-  if(currentPlayerIdx!==0) return;
-  doFold(0);
-}
-
-function playerCheck(){
-  if(!handInProgress||currentPlayerIdx!==0) return;
-  if(currentBet>players[0].bet) return;
-  doCheck(0);
-}
-
-function playerCall(){
-  if(!handInProgress||currentPlayerIdx!==0) return;
-  doCall(0);
-}
-
-function playerRaise(){
-  if(!handInProgress||currentPlayerIdx!==0) return;
-  var input=document.getElementById('raise-amount');
-  var amount=parseInt(input.value,10);
-  if(isNaN(amount)||amount<minRaise){showMsg('Min raise: $'+minRaise,'info');return}
-  doRaise(0,amount);
-}
-
-function playerAllIn(){
-  if(!handInProgress||currentPlayerIdx!==0) return;
-  doAllIn(0);
-}
-
-function doFold(idx){
-  players[idx].folded=true;
-  players[idx].lastAction='Fold';
-  playerActed[idx]=true;
-  playSound('card');
+  var sb=playersStillBetting();
+  if(sb.length===0||allActedAndEven()){advancePhase();return}
   if(playersInHand().length<=1){resolveHand();return}
-  advancePlayer();
+  var next=(currentPlayerIdx+1)%players.length,s=0;
+  while(s<players.length){if(!players[next].folded&&!players[next].eliminated&&!players[next].allIn)break;next=(next+1)%players.length;s++}
+  if(s>=players.length){advancePhase();return}
+  currentPlayerIdx=next;renderSoloAll();
+  if(gameMode==='online'&&isHost)broadcastState();
+  if(gameMode==='solo'&&!players[currentPlayerIdx].isHuman)runAILoop();
+  if(gameMode==='online'&&isHost&&players[currentPlayerIdx].isAI)runAILoop();
+}
+function advancePhase(){
+  for(var i=0;i<players.length;i++)players[i].bet=0;
+  currentBet=0;minRaise=BIG_BLIND;resetActed();
+  if(phase==='preflop'){phase='flop';deck.pop();community.push(deck.pop(),deck.pop(),deck.pop())}
+  else if(phase==='flop'){phase='turn';deck.pop();community.push(deck.pop())}
+  else if(phase==='turn'){phase='river';deck.pop();community.push(deck.pop())}
+  else if(phase==='river'){phase='showdown';resolveHand();return}
+  playSound('card');
+  if(playersStillBetting().length===0){renderSoloAll();if(gameMode==='online'&&isHost)broadcastState();setTimeout(function(){advancePhase()},800);return}
+  currentPlayerIdx=nextActiveIdx(dealerIdx);lastRaiseIdx=-1;renderSoloAll();
+  if(gameMode==='online'&&isHost)broadcastState();
+  if(gameMode==='solo'&&!players[currentPlayerIdx].isHuman)runAILoop();
+  if(gameMode==='online'&&isHost&&players[currentPlayerIdx].isAI)runAILoop();
 }
 
-function doCheck(idx){
-  players[idx].lastAction='Check';
-  playerActed[idx]=true;
-  advancePlayer();
-}
+function doFold(idx){players[idx].folded=true;players[idx].lastAction='Fold';playerActed[idx]=true;playSound('card');if(playersInHand().length<=1){resolveHand();return}advancePlayer()}
+function doCheck(idx){players[idx].lastAction='Check';playerActed[idx]=true;advancePlayer()}
+function doCall(idx){var tc=Math.min(currentBet-players[idx].bet,players[idx].chips);players[idx].chips-=tc;players[idx].bet+=tc;pot+=tc;if(players[idx].chips===0)players[idx].allIn=true;players[idx].lastAction=players[idx].allIn?'All In':'Call';playerActed[idx]=true;playSound('chip');advancePlayer()}
+function doRaise(idx,total){var ra=Math.min(total,players[idx].chips+players[idx].bet),add=ra-players[idx].bet;if(add>players[idx].chips)add=players[idx].chips;players[idx].chips-=add;pot+=add;var ob=currentBet;players[idx].bet+=add;currentBet=players[idx].bet;minRaise=currentBet-ob;if(minRaise<BIG_BLIND)minRaise=BIG_BLIND;if(players[idx].chips===0)players[idx].allIn=true;players[idx].lastAction=players[idx].allIn?'All In':'Raise $'+currentBet;lastRaiseIdx=idx;resetActed();playerActed[idx]=true;playSound('chip');advancePlayer()}
+function doAllIn(idx){var amt=players[idx].chips+players[idx].bet;if(amt>currentBet)doRaise(idx,amt);else{var add=players[idx].chips;players[idx].chips=0;players[idx].bet+=add;pot+=add;players[idx].allIn=true;players[idx].lastAction='All In';playerActed[idx]=true;playSound('chip');advancePlayer()}}
 
-function doCall(idx){
-  var toCall=Math.min(currentBet-players[idx].bet, players[idx].chips);
-  players[idx].chips-=toCall;
-  players[idx].bet+=toCall;
-  pot+=toCall;
-  if(players[idx].chips===0) players[idx].allIn=true;
-  players[idx].lastAction=players[idx].allIn?'All In':'Call';
-  playerActed[idx]=true;
-  playSound('chip');
-  advancePlayer();
-}
-
-function doRaise(idx,totalRaise){
-  var raiseAmount=Math.min(totalRaise,players[idx].chips+players[idx].bet);
-  var additional=raiseAmount-players[idx].bet;
-  if(additional>players[idx].chips) additional=players[idx].chips;
-  players[idx].chips-=additional;
-  pot+=additional;
-  var oldBet=currentBet;
-  players[idx].bet+=additional;
-  currentBet=players[idx].bet;
-  minRaise=currentBet-oldBet;
-  if(minRaise<BIG_BLIND) minRaise=BIG_BLIND;
-  if(players[idx].chips===0) players[idx].allIn=true;
-  players[idx].lastAction=players[idx].allIn?'All In':'Raise $'+currentBet;
-  lastRaiseIdx=idx;
-  // Everyone else needs to act again
-  resetActed();
-  playerActed[idx]=true;
-  playSound('chip');
-  advancePlayer();
-}
-
-function doAllIn(idx){
-  var amount=players[idx].chips+players[idx].bet;
-  if(amount>currentBet){
-    doRaise(idx,amount);
-  } else {
-    var additional=players[idx].chips;
-    players[idx].chips=0;
-    players[idx].bet+=additional;
-    pot+=additional;
-    players[idx].allIn=true;
-    players[idx].lastAction='All In';
-    playerActed[idx]=true;
-    playSound('chip');
-    advancePlayer();
-  }
-}
-
-// ═══════════════════════════════════════
-// AI LOGIC
-// ═══════════════════════════════════════
-
-function runAILoop(){
-  if(!handInProgress||players[currentPlayerIdx].isHuman) return;
-  setTimeout(function(){
-    aiAct(currentPlayerIdx);
-  }, 600+Math.random()*400);
-}
-
-function aiAct(idx){
-  if(!handInProgress||players[idx].isHuman||players[idx].folded||players[idx].eliminated||players[idx].allIn) {
-    advancePlayer();
+// Player actions (solo + online client sending to self-as-host)
+function playerAction(action,amount){
+  if(gameMode==='online'&&!isHost){
+    // Client: send action to host
+    if(conns.length>0)conns[0].send({type:'action',action:action,amount:amount});
     return;
   }
-
-  var p=players[idx];
-  var handStrength=aiEvalStrength(p);
-  var toCall=currentBet-p.bet;
-  var potOdds=toCall>0?toCall/(pot+toCall):0;
-
-  // AI decision based on hand strength
-  if(toCall===0){
-    // Can check or raise
-    if(handStrength>0.75 && Math.random()<0.6){
-      var raiseAmt=currentBet+BIG_BLIND*Math.ceil(Math.random()*3+1);
-      raiseAmt=Math.min(raiseAmt, p.chips+p.bet);
-      if(raiseAmt>currentBet) doRaise(idx,raiseAmt);
-      else doCheck(idx);
-    } else if(handStrength>0.9 && Math.random()<0.3){
-      doAllIn(idx);
-    } else {
-      doCheck(idx);
-    }
-  } else {
-    // Must call, raise or fold
-    if(handStrength>0.8 && Math.random()<0.4){
-      var raiseAmt=currentBet+BIG_BLIND*Math.ceil(Math.random()*3+1);
-      raiseAmt=Math.min(raiseAmt, p.chips+p.bet);
-      doRaise(idx,raiseAmt);
-    } else if(handStrength>0.5 || (handStrength>0.3 && potOdds<0.3)){
-      doCall(idx);
-    } else if(handStrength>0.3 && Math.random()<0.35){
-      doCall(idx); // bluff call sometimes
-    } else if(handStrength<0.2 && Math.random()<0.08){
-      // Rare bluff raise
-      var raiseAmt=currentBet+BIG_BLIND*2;
-      raiseAmt=Math.min(raiseAmt, p.chips+p.bet);
-      doRaise(idx,raiseAmt);
-    } else if(toCall>p.chips*0.5 && handStrength<0.5){
-      doFold(idx);
-    } else if(handStrength<0.25){
-      doFold(idx);
-    } else {
-      doCall(idx);
-    }
-  }
+  // Solo or host: execute directly
+  var idx=gameMode==='solo'?0:myPlayerIdx;
+  if(!handInProgress||currentPlayerIdx!==idx)return;
+  if(action==='fold')doFold(idx);
+  else if(action==='check'){if(currentBet>players[idx].bet)return;doCheck(idx)}
+  else if(action==='call')doCall(idx);
+  else if(action==='raise')doRaise(idx,amount);
+  else if(action==='allin')doAllIn(idx);
 }
+function playerFold(){playerAction('fold')}
+function playerCheck(){playerAction('check')}
+function playerCall(){playerAction('call')}
+function playerRaise(){var inp=document.getElementById('raise-amount');var amt=parseInt(inp.value,10);if(isNaN(amt)){showMsg('Enter a valid amount','info');return}playerAction('raise',amt)}
+function playerAllIn(){playerAction('allin')}
 
+// AI
+function runAILoop(){if(!handInProgress)return;var p=players[currentPlayerIdx];if(p.isHuman||(gameMode==='online'&&!p.isAI))return;setTimeout(function(){aiAct(currentPlayerIdx)},600+Math.random()*400)}
+function aiAct(idx){
+  if(!handInProgress)return;var p=players[idx];
+  if((p.isHuman&&gameMode==='solo')||(gameMode==='online'&&!p.isAI)||p.folded||p.eliminated||p.allIn){advancePlayer();return}
+  var hs=aiEvalStrength(p),tc=currentBet-p.bet,po=tc>0?tc/(pot+tc):0;
+  if(tc===0){if(hs>.75&&Math.random()<.6){var ra=currentBet+BIG_BLIND*Math.ceil(Math.random()*3+1);ra=Math.min(ra,p.chips+p.bet);if(ra>currentBet)doRaise(idx,ra);else doCheck(idx)}else if(hs>.9&&Math.random()<.3)doAllIn(idx);else doCheck(idx)}
+  else{if(hs>.8&&Math.random()<.4){var ra=currentBet+BIG_BLIND*Math.ceil(Math.random()*3+1);ra=Math.min(ra,p.chips+p.bet);doRaise(idx,ra)}else if(hs>.5||(hs>.3&&po<.3))doCall(idx);else if(hs>.3&&Math.random()<.35)doCall(idx);else if(hs<.2&&Math.random()<.08){var ra=currentBet+BIG_BLIND*2;ra=Math.min(ra,p.chips+p.bet);doRaise(idx,ra)}else if(tc>p.chips*.5&&hs<.5)doFold(idx);else if(hs<.25)doFold(idx);else doCall(idx)}
+}
 function aiEvalStrength(p){
-  var score=0;
-  var c1=p.hand[0],c2=p.hand[1];
-  var v1=RANK_VALUES[c1.rank],v2=RANK_VALUES[c2.rank];
-  var high=Math.max(v1,v2),low=Math.min(v1,v2);
-  var paired=v1===v2;
-  var suited=c1.suit===c2.suit;
-
-  // Preflop strength
-  if(paired) score=0.5+high/28; // pairs are strong
-  else{
-    score=(high+low/2)/28;
-    if(suited) score+=0.06;
-    if(high-low<=4) score+=0.04; // connected
-    if(high-low===1) score+=0.03;
-  }
-  if(high===14) score+=0.08; // ace bonus
-  if(high===13) score+=0.04;
-
-  // Post-flop: evaluate actual hand
-  if(community.length>0){
-    var all=p.hand.concat(community);
-    var eval1=evaluateHand(all);
-    if(eval1){
-      score=0.3+eval1.handRank*0.08;
-      if(eval1.handRank>=1) score+=0.1; // pair+
-      if(eval1.handRank>=2) score+=0.1;
-      if(eval1.handRank>=3) score+=0.1;
-      if(eval1.handRank>=6) score+=0.15;
-      score=Math.min(score,1);
-    }
-  }
-
-  // Add some randomness for personality
-  score+=Math.random()*0.15-0.07;
-  return Math.max(0,Math.min(1,score));
+  var s=0,c1=p.hand[0],c2=p.hand[1],v1=RANK_VALUES[c1.rank],v2=RANK_VALUES[c2.rank];
+  var hi=Math.max(v1,v2),lo=Math.min(v1,v2),paired=v1===v2,suited=c1.suit===c2.suit;
+  if(paired)s=.5+hi/28;else{s=(hi+lo/2)/28;if(suited)s+=.06;if(hi-lo<=4)s+=.04;if(hi-lo===1)s+=.03}
+  if(hi===14)s+=.08;if(hi===13)s+=.04;
+  if(community.length>0){var all=p.hand.concat(community),ev=evaluateHand(all);if(ev){s=.3+ev.handRank*.08;if(ev.handRank>=1)s+=.1;if(ev.handRank>=2)s+=.1;if(ev.handRank>=3)s+=.1;if(ev.handRank>=6)s+=.15;s=Math.min(s,1)}}
+  s+=Math.random()*.15-.07;return Math.max(0,Math.min(1,s));
 }
-
-// ═══════════════════════════════════════
-// SHOWDOWN
-// ═══════════════════════════════════════
 
 function resolveHand(){
-  handInProgress=false;
-  phase='showdown';
-
+  handInProgress=false;phase='showdown';
   var inHand=playersInHand();
-
-  if(inHand.length===1){
-    // Everyone else folded
-    var winner=inHand[0];
-    winner.chips+=pot;
-    winner.lastAction='Wins $'+pot;
-    showMsg(winner.name+' wins $'+pot+'!','win');
-    if(winner.isHuman){playSound('win');spawnConfetti()}
-    renderAll();
-    setTimeout(showDealButton,2000);
-    return;
-  }
-
-  // Evaluate hands
-  var results=[];
-  for(var i=0;i<inHand.length;i++){
-    var all=inHand[i].hand.concat(community);
-    var ev=evaluateHand(all);
-    results.push({player:inHand[i],score:ev});
-  }
-
-  // Sort by hand strength
+  if(inHand.length===1){var w=inHand[0];w.chips+=pot;w.lastAction='Wins $'+pot;showMsg(w.name+' wins $'+pot+'!','win');if(w.isMe||w.isHuman&&gameMode==='solo'){playSound('win');spawnConfetti()}renderSoloAll();if(gameMode==='online'&&isHost)broadcastState();setTimeout(showDealBtn,2000);return}
+  var results=[];for(var i=0;i<inHand.length;i++){var ev=evaluateHand(inHand[i].hand.concat(community));results.push({player:inHand[i],score:ev})}
   results.sort(function(a,b){return compareScores(b.score,a.score)});
-
-  // Check for ties
-  var winners=[results[0]];
-  for(var i=1;i<results.length;i++){
-    if(compareScores(results[i].score,results[0].score)===0) winners.push(results[i]);
-    else break;
-  }
-
-  // Split pot among winners
-  var share=Math.floor(pot/winners.length);
-  var names=[];
-  for(var i=0;i<winners.length;i++){
-    winners[i].player.chips+=share;
-    winners[i].player.lastAction=winners[i].score.name;
-    names.push(winners[i].player.name);
-  }
-  // Remainder to first winner
+  var winners=[results[0]];for(var i=1;i<results.length;i++){if(compareScores(results[i].score,results[0].score)===0)winners.push(results[i]);else break}
+  var share=Math.floor(pot/winners.length),names=[];
+  for(var i=0;i<winners.length;i++){winners[i].player.chips+=share;winners[i].player.lastAction=winners[i].score.name;names.push(winners[i].player.name)}
   winners[0].player.chips+=pot-share*winners.length;
-
-  var youWon=winners.some(function(w){return w.player.isHuman});
-  if(winners.length===1){
-    showMsg(names[0]+' wins with '+winners[0].score.name+'!',youWon?'win':'lose');
-  } else {
-    showMsg('Split pot: '+names.join(', ')+' ('+winners[0].score.name+')',youWon?'win':'info');
-  }
-
-  if(youWon){playSound('win');spawnConfetti()}
-
-  renderAll();
-  setTimeout(showDealButton,2500);
+  var iWon=winners.some(function(w){return w.player.isMe||(w.player.isHuman&&gameMode==='solo')});
+  if(winners.length===1)showMsg(names[0]+' wins with '+winners[0].score.name+'!',iWon?'win':'lose');
+  else showMsg('Split: '+names.join(', ')+' ('+winners[0].score.name+')',iWon?'win':'info');
+  if(iWon){playSound('win');spawnConfetti()}
+  renderSoloAll();if(gameMode==='online'&&isHost)broadcastState();setTimeout(showDealBtn,2500);
 }
-
-function showDealButton(){
-  var controls=document.getElementById('controls');
-  controls.innerHTML='<button class="btn btn-deal" onclick="startHand()">&#127183; NEXT HAND</button>';
+function showDealBtn(){
+  var el=document.getElementById('controls');
+  if(gameMode==='solo')el.innerHTML='<button class="btn btn-back" onclick="showMenu()">MENU</button><button class="btn btn-deal" onclick="startHand()">&#127183; NEXT HAND</button>';
+  else if(gameMode==='online'&&isHost)el.innerHTML='<button class="btn btn-back" onclick="showMenu()">LEAVE</button><button class="btn btn-deal" onclick="startHand()">&#127183; NEXT HAND</button>';
+  else if(gameMode==='online')el.innerHTML='<button class="btn btn-back" onclick="showMenu()">LEAVE</button><div style="color:rgba(255,255,255,.5);font-size:.85rem;letter-spacing:2px">Waiting for host...</div>';
 }
 
 // ═══════════════════════════════════════
-// RENDERING
+// RENDERING (shared solo + online)
 // ═══════════════════════════════════════
-
-function renderAll(){
-  renderPlayers();
-  renderCommunity();
-  renderYourHand();
-  renderControls();
-  document.getElementById('pot').textContent=pot;
-  document.getElementById('round-info').textContent=phase==='idle'?'Press Deal to Start':phase.toUpperCase();
-}
+function renderSoloAll(){renderPlayers();renderCommunity();renderYourHand();renderControls();document.getElementById('pot').textContent=pot;document.getElementById('round-info').textContent=phase==='idle'?'Press Deal':phase.toUpperCase()}
 
 function renderPlayers(){
-  var row=document.getElementById('players-row');
-  var html='';
+  var row=document.getElementById('players-row');if(!row)return;var html='';
   for(var i=0;i<players.length;i++){
     var p=players[i];
-    if(p.eliminated){
-      html+='<div class="player-seat eliminated"><div class="player-name">'+p.name+'</div><div class="player-chips broke">OUT</div></div>';
-      continue;
-    }
+    if(p.eliminated){html+='<div class="player-seat eliminated"><div class="player-name">'+p.name+'</div><div class="player-chips broke">OUT</div></div>';continue}
     var cls='player-seat';
-    if(i===currentPlayerIdx && handInProgress && phase!=='showdown') cls+=' active';
-    if(p.folded && handInProgress) cls+=' folded';
-    if(p.lastAction && p.lastAction.indexOf('Wins')>-1) cls+=' winner';
-    if(phase==='showdown' && !p.folded && p.lastAction && HAND_NAMES.indexOf(p.lastAction)>-1) cls+=' winner';
-
+    if(i===currentPlayerIdx&&handInProgress&&phase!=='showdown')cls+=' active';
+    if(p.folded&&handInProgress)cls+=' folded';
+    if(p.lastAction&&p.lastAction.indexOf('Wins')>-1)cls+=' winner';
+    if(phase==='showdown'&&!p.folded&&p.lastAction&&HAND_NAMES.indexOf(p.lastAction)>-1)cls+=' winner';
     html+='<div class="'+cls+'">';
-    if(i===dealerIdx) html+='<div class="dealer-chip">D</div>';
-    html+='<div class="player-name'+(p.isHuman?' you':'')+'">'+p.name+'</div>';
+    if(i===dealerIdx)html+='<div class="dealer-chip">D</div>';
+    var isMe=p.isMe||(p.isHuman&&gameMode==='solo');
+    html+='<div class="player-name'+(isMe?' you':'')+'">'+p.name+'</div>';
     html+='<div class="player-chips'+(p.chips<=0?' broke':'')+'">$'+p.chips+'</div>';
     html+='<div class="player-bet-info">'+(p.bet>0?'Bet: $'+p.bet:'')+'</div>';
     html+='<div class="player-cards">';
-    if(p.hand.length>0){
-      var showCards = p.isHuman || phase==='showdown' && !p.folded;
+    if(p.hand&&p.hand.length>0){
+      var show=isMe||phase==='showdown'&&!p.folded;
       var anim=(prevPlayerCardCount[i]||0)===0?' deal-anim':'';
-      html+=cardHTMLWithAnim(p.hand[0],!showCards,true,anim);
-      html+=cardHTMLWithAnim(p.hand[1],!showCards,true,anim);
+      html+=cardHTMLAnim(p.hand[0],!show,true,anim);
+      html+=cardHTMLAnim(p.hand[1],!show,true,anim);
       prevPlayerCardCount[i]=p.hand.length;
     }
     html+='</div>';
-    var actionCls='player-action';
-    if(p.lastAction==='Fold') actionCls+=' fold-action';
-    else if(p.lastAction==='Call') actionCls+=' call-action';
-    else if(p.lastAction.indexOf('Raise')>-1) actionCls+=' raise-action';
-    else if(p.lastAction==='Check') actionCls+=' check-action';
-    else if(p.lastAction==='All In') actionCls+=' allin-action';
-    html+='<div class="'+actionCls+'">'+p.lastAction+'</div>';
-    html+='</div>';
+    var ac='player-action';
+    if(p.lastAction==='Fold')ac+=' fold-action';
+    else if(p.lastAction==='Call')ac+=' call-action';
+    else if(p.lastAction&&p.lastAction.indexOf('Raise')>-1)ac+=' raise-action';
+    else if(p.lastAction==='Check')ac+=' check-action';
+    else if(p.lastAction==='All In')ac+=' allin-action';
+    html+='<div class="'+ac+'">'+(p.lastAction||'')+'</div></div>';
   }
   row.innerHTML=html;
 }
-
 function renderCommunity(){
-  var el=document.getElementById('community-cards');
-  var html='';
-  for(var i=0;i<community.length;i++){
-    var anim=i>=prevCommunityCount?' deal-anim':'';
-    html+=cardHTMLWithAnim(community[i],false,false,anim);
-  }
-  for(var i=community.length;i<5;i++) html+='<div class="card" style="background:rgba(0,0,0,.2);border:2px dashed rgba(255,255,255,.1);box-shadow:none;animation:none"></div>';
-  el.innerHTML=html;
-  prevCommunityCount=community.length;
+  var el=document.getElementById('community-cards');if(!el)return;var html='';
+  for(var i=0;i<community.length;i++){var anim=i>=prevCommunityCount?' deal-anim':'';html+=cardHTMLAnim(community[i],false,false,anim)}
+  for(var i=community.length;i<5;i++)html+='<div class="card" style="background:rgba(0,0,0,.2);border:2px dashed rgba(255,255,255,.1);box-shadow:none;animation:none"></div>';
+  el.innerHTML=html;prevCommunityCount=community.length;
 }
-
 function renderYourHand(){
-  var el=document.getElementById('your-cards');
-  var rankEl=document.getElementById('hand-rank');
-  var p=players[0];
-  if(p.hand.length===0||p.eliminated){el.innerHTML='';rankEl.textContent='';return}
-  var anim=(prevPlayerCardCount[0]||0)===0?' deal-anim':'';
-  el.innerHTML=cardHTMLWithAnim(p.hand[0],false,false,anim)+cardHTMLWithAnim(p.hand[1],false,false,anim);
-  if(community.length>0 && !p.folded){
-    var all=p.hand.concat(community);
-    var ev=evaluateHand(all);
-    rankEl.textContent=ev?ev.name:'';
-  } else {
-    rankEl.textContent='';
-  }
+  var el=document.getElementById('your-cards'),rk=document.getElementById('hand-rank');if(!el)return;
+  var me=null;for(var i=0;i<players.length;i++)if(players[i].isMe||(players[i].isHuman&&gameMode==='solo')){me=players[i];break}
+  if(!me||!me.hand||me.hand.length===0||me.eliminated){el.innerHTML='';rk.textContent='';return}
+  var idx=players.indexOf(me);
+  var anim=(prevPlayerCardCount[idx]||0)===0?' deal-anim':'';
+  el.innerHTML=cardHTMLAnim(me.hand[0],false,false,anim)+cardHTMLAnim(me.hand[1],false,false,anim);
+  if(community.length>0&&!me.folded){var ev=evaluateHand(me.hand.concat(community));rk.textContent=ev?ev.name:''}else rk.textContent='';
 }
-
 function renderControls(){
   var el=document.getElementById('controls');
-  if(!handInProgress || phase==='showdown' || phase==='idle'){
-    if(phase==='idle') el.innerHTML='<button class="btn btn-deal" onclick="startHand()">&#127183; DEAL</button>';
+  if(!handInProgress||phase==='showdown'||phase==='idle'){
+    if(phase==='idle'){
+      if(gameMode==='solo')el.innerHTML='<button class="btn btn-back" onclick="showMenu()">MENU</button><button class="btn btn-deal" onclick="startHand()">&#127183; DEAL</button>';
+      else if(gameMode==='online'&&isHost)el.innerHTML='<button class="btn btn-back" onclick="showMenu()">LEAVE</button><button class="btn btn-deal" onclick="startHand()">&#127183; DEAL</button>';
+      else if(gameMode==='online')el.innerHTML='<button class="btn btn-back" onclick="showMenu()">LEAVE</button><div style="color:rgba(255,255,255,.5);font-size:.85rem;letter-spacing:2px">Waiting for host to deal...</div>';
+    }
     return;
   }
-  if(currentPlayerIdx!==0 || players[0].folded || players[0].eliminated || players[0].allIn){
-    el.innerHTML='<div style="color:rgba(255,255,255,.5);font-size:.85rem;letter-spacing:2px">Waiting...</div>';
-    return;
+  var meIdx=-1;for(var i=0;i<players.length;i++)if(players[i].isMe||(players[i].isHuman&&gameMode==='solo')){meIdx=i;break}
+  if(meIdx<0)return;
+  var me=players[meIdx];
+  if(currentPlayerIdx!==meIdx||me.folded||me.eliminated||me.allIn){
+    el.innerHTML='<div style="color:rgba(255,255,255,.5);font-size:.85rem;letter-spacing:2px">Waiting...</div>';return;
   }
-
-  var p=players[0];
-  var toCall=currentBet-p.bet;
-  var html='';
-
+  var tc=currentBet-me.bet,html='';
   html+='<button class="btn btn-fold" onclick="playerFold()">FOLD</button>';
-
-  if(toCall===0){
-    html+='<button class="btn btn-check" onclick="playerCheck()">CHECK</button>';
-  } else {
-    html+='<button class="btn btn-call" onclick="playerCall()">CALL $'+Math.min(toCall,p.chips)+'</button>';
-  }
-
-  if(p.chips>toCall){
-    var defaultRaise=Math.min(currentBet+minRaise,p.chips+p.bet);
-    if(defaultRaise<BIG_BLIND+currentBet) defaultRaise=Math.min(currentBet+BIG_BLIND,p.chips+p.bet);
-    html+='<input type="number" class="raise-input" id="raise-amount" value="'+defaultRaise+'" min="'+(currentBet+minRaise)+'" max="'+(p.chips+p.bet)+'">';
+  if(tc===0)html+='<button class="btn btn-check" onclick="playerCheck()">CHECK</button>';
+  else html+='<button class="btn btn-call" onclick="playerCall()">CALL $'+Math.min(tc,me.chips)+'</button>';
+  if(me.chips>tc){
+    var dr=Math.min(currentBet+minRaise,me.chips+me.bet);
+    if(dr<BIG_BLIND+currentBet)dr=Math.min(currentBet+BIG_BLIND,me.chips+me.bet);
+    html+='<input type="number" class="raise-input" id="raise-amount" value="'+dr+'" min="'+(currentBet+minRaise)+'" max="'+(me.chips+me.bet)+'">';
     html+='<button class="btn btn-raise" onclick="playerRaise()">RAISE</button>';
     html+='<button class="btn btn-allin" onclick="playerAllIn()">ALL IN</button>';
   }
-
   el.innerHTML=html;
 }
+function showMsg(msg,type){var el=document.getElementById('message');if(!el)return;el.textContent=msg;el.className='message';if(type)el.className+=' '+type}
 
-function showMsg(msg,type){
-  var el=document.getElementById('message');
-  el.textContent=msg;
-  el.className='message';
-  if(type) el.className+=' '+type;
+// ═══════════════════════════════════════
+// ONLINE MULTIPLAYER (PeerJS)
+// ═══════════════════════════════════════
+
+function genRoomCode(){var c='';for(var i=0;i<4;i++)c+='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[Math.floor(Math.random()*31)];return c}
+
+function showCreateRoom(){
+  myName=document.getElementById('name-input').value.trim()||'Host';
+  gameMode='lobby';isHost=true;
+  roomCode=genRoomCode();
+  var peerId='poker-'+roomCode;
+  var ga=document.getElementById('game-area');
+  ga.innerHTML='<div class="menu-screen"><div class="menu-title">Creating Room...</div><div class="lobby-status">Connecting...</div></div>';
+  document.getElementById('controls').innerHTML='<button class="btn btn-back" onclick="showMenu()">BACK</button>';
+
+  peer=new Peer(peerId);
+  peer.on('open',function(){
+    lobbyPlayers=[{name:myName,peerId:peerId,conn:null}];
+    renderLobby();
+  });
+  peer.on('connection',function(conn){
+    conn.on('open',function(){
+      conn.on('data',function(data){handleHostData(conn,data)});
+    });
+    conn.on('close',function(){removeConn(conn)});
+    conn.on('error',function(){removeConn(conn)});
+    conns.push(conn);
+  });
+  peer.on('error',function(err){
+    ga.innerHTML='<div class="menu-screen"><div class="menu-title" style="color:#e74c3c">Connection Error</div><div class="lobby-status">'+err.type+': Try a different room or refresh</div></div>';
+  });
+}
+
+function showJoinRoom(){
+  myName=document.getElementById('name-input').value.trim()||'Player';
+  gameMode='lobby';isHost=false;
+  var ga=document.getElementById('game-area');
+  ga.innerHTML='<div class="menu-screen"><div class="menu-title">Join Room</div><div class="menu-btns">'+
+    '<input class="menu-input" id="room-code-input" placeholder="ROOM CODE" maxlength="4" style="text-transform:uppercase;letter-spacing:6px">'+
+    '<button class="btn btn-online" onclick="doJoinRoom()">JOIN</button></div></div>';
+  document.getElementById('controls').innerHTML='<button class="btn btn-back" onclick="showMenu()">BACK</button>';
+}
+
+function doJoinRoom(){
+  var code=(document.getElementById('room-code-input').value||'').toUpperCase().trim();
+  if(code.length!==4){showMsg('Enter a 4-letter room code','info');return}
+  roomCode=code;
+  var ga=document.getElementById('game-area');
+  ga.innerHTML='<div class="menu-screen"><div class="menu-title">Joining...</div><div class="lobby-status">Connecting to '+code+'...</div></div>';
+
+  peer=new Peer();
+  peer.on('open',function(){
+    var conn=peer.connect('poker-'+roomCode,{reliable:true});
+    conn.on('open',function(){
+      conns=[conn];
+      conn.send({type:'join',name:myName});
+      conn.on('data',function(data){handleClientData(data)});
+    });
+    conn.on('close',function(){showMsg('Disconnected from host','lose');showMenu()});
+    conn.on('error',function(){showMsg('Connection error','lose');showMenu()});
+  });
+  peer.on('error',function(err){
+    ga.innerHTML='<div class="menu-screen"><div class="menu-title" style="color:#e74c3c">Could Not Join</div><div class="lobby-status">Room not found or connection failed</div></div>';
+    document.getElementById('controls').innerHTML='<button class="btn btn-back" onclick="showMenu()">BACK</button>';
+  });
+}
+
+function removeConn(conn){
+  for(var i=conns.length-1;i>=0;i--)if(conns[i]===conn)conns.splice(i,1);
+  for(var i=lobbyPlayers.length-1;i>=0;i--)if(lobbyPlayers[i].conn===conn)lobbyPlayers.splice(i,1);
+  if(gameMode==='lobby')renderLobby();
+  if(gameMode==='online'&&isHost){broadcastLobby();broadcastState()}
+}
+
+function renderLobby(){
+  var ga=document.getElementById('game-area');
+  var html='<div class="menu-screen"><div class="menu-title">Room Created</div>';
+  html+='<div class="lobby-status">Share this code with friends:</div>';
+  html+='<div class="room-code-display" onclick="copyCode()">'+roomCode+'</div>';
+  html+='<div class="copy-hint">Click to copy</div>';
+  html+='<div class="lobby-players">';
+  for(var i=0;i<lobbyPlayers.length;i++){
+    html+='<div class="lobby-player'+(i===0?' host':'')+'">'+lobbyPlayers[i].name+(i===0?' (Host)':'')+'</div>';
+  }
+  html+='</div>';
+  html+='<div class="lobby-status">'+lobbyPlayers.length+'/8 players</div>';
+  html+='</div>';
+  ga.innerHTML=html;
+  var ctrl='<button class="btn btn-back" onclick="showMenu()">BACK</button>';
+  if(lobbyPlayers.length>=2)ctrl+='<button class="btn btn-deal" onclick="startOnlineGame()">&#127183; START GAME</button>';
+  document.getElementById('controls').innerHTML=ctrl;
+}
+
+function copyCode(){
+  try{navigator.clipboard.writeText(roomCode)}catch(e){}
+  showMsg('Code copied!','info');
+}
+
+// ── Host: handle messages from clients ──
+function handleHostData(conn,data){
+  if(data.type==='join'){
+    lobbyPlayers.push({name:data.name,peerId:conn.peer,conn:conn});
+    if(gameMode==='lobby'){renderLobby();broadcastLobby()}
+    else if(gameMode==='online'){
+      // Late join - add as spectator or add to game
+      conn.send({type:'lobby',players:lobbyPlayers.map(function(p){return p.name}),roomCode:roomCode});
+      broadcastState();
+    }
+  }
+  if(data.type==='action'&&gameMode==='online'){
+    // Find which player this conn belongs to
+    var pIdx=-1;
+    for(var i=0;i<players.length;i++){
+      if(players[i].peerId===conn.peer){pIdx=i;break}
+    }
+    if(pIdx<0||currentPlayerIdx!==pIdx||!handInProgress)return;
+    if(data.action==='fold')doFold(pIdx);
+    else if(data.action==='check'){if(currentBet<=players[pIdx].bet)doCheck(pIdx)}
+    else if(data.action==='call')doCall(pIdx);
+    else if(data.action==='raise'&&data.amount)doRaise(pIdx,data.amount);
+    else if(data.action==='allin')doAllIn(pIdx);
+  }
+}
+
+function broadcastLobby(){
+  var names=lobbyPlayers.map(function(p){return p.name});
+  for(var i=0;i<conns.length;i++){
+    try{conns[i].send({type:'lobby',players:names,roomCode:roomCode})}catch(e){}
+  }
+}
+
+// ── Host: broadcast game state to all clients ──
+function broadcastState(){
+  for(var i=0;i<conns.length;i++){
+    // Find which player this conn is
+    var connPeerId=conns[i].peer;
+    var pIdx=-1;
+    for(var j=0;j<players.length;j++){
+      if(players[j].peerId===connPeerId){pIdx=j;break}
+    }
+    // Build state for this player (hide other players' cards unless showdown)
+    var statePlayers=[];
+    for(var j=0;j<players.length;j++){
+      var sp={name:players[j].name,chips:players[j].chips,bet:players[j].bet,folded:players[j].folded,allIn:players[j].allIn,lastAction:players[j].lastAction,eliminated:players[j].eliminated,isMe:j===pIdx};
+      if(j===pIdx||(phase==='showdown'&&!players[j].folded)){
+        sp.hand=players[j].hand;
+      } else if(players[j].hand&&players[j].hand.length>0){
+        sp.hand=[{rank:'?',suit:'?'},{rank:'?',suit:'?'}];
+      } else {
+        sp.hand=[];
+      }
+      statePlayers.push(sp);
+    }
+    try{conns[i].send({type:'state',players:statePlayers,community:community,pot:pot,currentBet:currentBet,dealerIdx:dealerIdx,currentPlayerIdx:currentPlayerIdx,phase:phase,handInProgress:handInProgress,minRaise:minRaise})}catch(e){}
+  }
+}
+
+// ── Client: handle messages from host ──
+function handleClientData(data){
+  if(data.type==='lobby'){
+    lobbyPlayers=data.players.map(function(n){return{name:n}});
+    roomCode=data.roomCode;
+    if(gameMode==='lobby')renderClientLobby();
+  }
+  if(data.type==='state'){
+    gameMode='online';
+    onlineState=data;
+    players=data.players;
+    community=data.community;
+    pot=data.pot;
+    currentBet=data.currentBet;
+    dealerIdx=data.dealerIdx;
+    currentPlayerIdx=data.currentPlayerIdx;
+    phase=data.phase;
+    handInProgress=data.handInProgress;
+    minRaise=data.minRaise;
+    // Find my index
+    myPlayerIdx=-1;
+    for(var i=0;i<players.length;i++)if(players[i].isMe)myPlayerIdx=i;
+    if(!document.getElementById('players-row'))renderGameArea();
+    renderSoloAll();
+    if(phase==='showdown'){
+      var iWon=false;
+      for(var i=0;i<players.length;i++){
+        if(players[i].isMe&&players[i].lastAction&&(players[i].lastAction.indexOf('Wins')>-1||HAND_NAMES.indexOf(players[i].lastAction)>-1)){iWon=true;break}
+      }
+      if(iWon){playSound('win');spawnConfetti()}
+    }
+  }
+}
+
+function renderClientLobby(){
+  var ga=document.getElementById('game-area');
+  var html='<div class="menu-screen"><div class="menu-title">Room: '+roomCode+'</div>';
+  html+='<div class="lobby-players">';
+  for(var i=0;i<lobbyPlayers.length;i++){
+    html+='<div class="lobby-player'+(i===0?' host':'')+'">'+lobbyPlayers[i].name+(i===0?' (Host)':'')+'</div>';
+  }
+  html+='</div>';
+  html+='<div class="lobby-status">Waiting for host to start...</div>';
+  html+='</div>';
+  ga.innerHTML=html;
+  document.getElementById('controls').innerHTML='<button class="btn btn-back" onclick="showMenu()">LEAVE</button>';
+}
+
+// ── Start online game (host only) ──
+function startOnlineGame(){
+  gameMode='online';
+  players=[];
+  // Host is first player
+  myPlayerIdx=0;
+  players.push({name:lobbyPlayers[0].name,chips:STARTING_CHIPS,hand:[],bet:0,folded:false,allIn:false,isHuman:true,isMe:true,isAI:false,peerId:peer.id,lastAction:''});
+  // Other connected players
+  for(var i=1;i<lobbyPlayers.length;i++){
+    var lp=lobbyPlayers[i];
+    players.push({name:lp.name,chips:STARTING_CHIPS,hand:[],bet:0,folded:false,allIn:false,isHuman:false,isMe:false,isAI:false,peerId:lp.conn?lp.conn.peer:'',lastAction:''});
+  }
+  phase='idle';dealerIdx=0;handInProgress=false;
+  prevCommunityCount=0;prevPlayerCardCount=[];
+  for(var i=0;i<players.length;i++)prevPlayerCardCount[i]=0;
+  renderGameArea();renderSoloAll();broadcastState();
 }
 
 // ═══════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════
-
 document.addEventListener('DOMContentLoaded',function(){
   initParticles();
-  initPlayers();
-  renderAll();
-  document.addEventListener('click',function(){
-    if(audioCtx&&audioCtx.state==='suspended') audioCtx.resume();
-  },{once:true});
+  showMenu();
+  document.addEventListener('click',function(){if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume()},{once:true});
 });
 </script>
 </body>
