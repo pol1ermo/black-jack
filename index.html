@@ -524,8 +524,19 @@ function showCreateRoom(){
   ga.innerHTML='<div class="menu-screen"><div class="menu-title">Creating Room...</div><div class="lobby-status">Connecting...</div></div>';
   document.getElementById('controls').innerHTML='<button class="btn btn-back" onclick="showMenu()">BACK</button>';
 
-  peer=new Peer(peerId);
+  if(peer){try{peer.destroy()}catch(e){}}
+  peer=new Peer(peerId,{debug:0});
+  var hostTimeout=setTimeout(function(){
+    var st=ga.querySelector('.lobby-status');
+    if(st)st.textContent='Taking longer than expected... still trying';
+  },5000);
+  var hostFail=setTimeout(function(){
+    clearTimeout(hostTimeout);
+    ga.innerHTML='<div class="menu-screen"><div class="menu-title" style="color:#e74c3c">Connection Timed Out</div><div class="lobby-status">Could not connect to server. Try refreshing.</div></div>';
+    document.getElementById('controls').innerHTML='<button class="btn btn-back" onclick="showMenu()">BACK</button>';
+  },15000);
   peer.on('open',function(){
+    clearTimeout(hostTimeout);clearTimeout(hostFail);
     lobbyPlayers=[{name:myName,peerId:peerId,conn:null}];
     renderLobby();
   });
@@ -538,7 +549,11 @@ function showCreateRoom(){
     conns.push(conn);
   });
   peer.on('error',function(err){
-    ga.innerHTML='<div class="menu-screen"><div class="menu-title" style="color:#e74c3c">Connection Error</div><div class="lobby-status">'+err.type+': Try a different room or refresh</div></div>';
+    clearTimeout(hostTimeout);clearTimeout(hostFail);
+    var msg=err.type+': Try a different room or refresh';
+    if(err.type==='unavailable-id')msg='Room code already in use. Try again to get a new code.';
+    ga.innerHTML='<div class="menu-screen"><div class="menu-title" style="color:#e74c3c">Connection Error</div><div class="lobby-status">'+msg+'</div></div>';
+    document.getElementById('controls').innerHTML='<button class="btn btn-back" onclick="showMenu()">BACK</button>';
   });
 }
 
@@ -557,21 +572,50 @@ function doJoinRoom(){
   if(code.length!==4){showMsg('Enter a 4-letter room code','info');return}
   roomCode=code;
   var ga=document.getElementById('game-area');
-  ga.innerHTML='<div class="menu-screen"><div class="menu-title">Joining...</div><div class="lobby-status">Connecting to '+code+'...</div></div>';
+  ga.innerHTML='<div class="menu-screen"><div class="menu-title">Joining...</div><div class="lobby-status" id="join-status">Connecting...</div></div>';
 
-  peer=new Peer();
+  if(peer){try{peer.destroy()}catch(e){}}
+  peer=new Peer(null,{debug:0});
+
+  var joinTimeout=setTimeout(function(){
+    var st=document.getElementById('join-status');
+    if(st)st.textContent='Taking longer than expected... still trying';
+  },5000);
+  var failTimeout=setTimeout(function(){
+    clearTimeout(joinTimeout);
+    if(peer)try{peer.destroy()}catch(e){}
+    peer=null;
+    ga.innerHTML='<div class="menu-screen"><div class="menu-title" style="color:#e74c3c">Connection Timed Out</div><div class="lobby-status">Could not reach room '+code+'. Make sure the host\'s room is open.</div></div>';
+    document.getElementById('controls').innerHTML='<button class="btn btn-back" onclick="showMenu()">BACK</button>';
+  },15000);
+
   peer.on('open',function(){
-    var conn=peer.connect('poker-'+roomCode,{reliable:true});
+    var st=document.getElementById('join-status');
+    if(st)st.textContent='Connected to server, joining room '+code+'...';
+    var conn=peer.connect('poker-'+roomCode,{reliable:true,serialization:'json'});
+    var connOpened=false;
     conn.on('open',function(){
+      connOpened=true;
+      clearTimeout(joinTimeout);clearTimeout(failTimeout);
       conns=[conn];
       conn.send({type:'join',name:myName});
       conn.on('data',function(data){handleClientData(data)});
+      if(st)st.textContent='Connected! Waiting for host...';
     });
-    conn.on('close',function(){showMsg('Disconnected from host','lose');showMenu()});
-    conn.on('error',function(){showMsg('Connection error','lose');showMenu()});
+    conn.on('close',function(){if(gameMode!=='menu'){showMsg('Disconnected from host','lose');showMenu()}});
+    conn.on('error',function(err){
+      clearTimeout(joinTimeout);clearTimeout(failTimeout);
+      ga.innerHTML='<div class="menu-screen"><div class="menu-title" style="color:#e74c3c">Connection Failed</div><div class="lobby-status">Could not connect to room '+code+'</div></div>';
+      document.getElementById('controls').innerHTML='<button class="btn btn-back" onclick="showMenu()">BACK</button>';
+    });
   });
   peer.on('error',function(err){
-    ga.innerHTML='<div class="menu-screen"><div class="menu-title" style="color:#e74c3c">Could Not Join</div><div class="lobby-status">Room not found or connection failed</div></div>';
+    clearTimeout(joinTimeout);clearTimeout(failTimeout);
+    var msg='Room not found or connection failed';
+    if(err.type==='peer-unavailable')msg='Room '+code+' not found. Check the code and try again.';
+    else if(err.type==='network')msg='Network error. Check your internet connection.';
+    else if(err.type==='server-error')msg='PeerJS server error. Try again in a moment.';
+    ga.innerHTML='<div class="menu-screen"><div class="menu-title" style="color:#e74c3c">Could Not Join</div><div class="lobby-status">'+msg+'</div></div>';
     document.getElementById('controls').innerHTML='<button class="btn btn-back" onclick="showMenu()">BACK</button>';
   });
 }
